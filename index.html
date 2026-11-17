@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHENG KE — Portfolio</title>
+<style>
+  :root{
+    --bg:#faf8f5;
+    --ink:#111111;
+    --line:#111111;
+    --yellow:#ffd02e;
+    --red:#ff4b1f;
+    --blue:#2e5bff;
+    --green:#0e9f6e;
+    --shadow:6px 6px 0 #111;
+    --shadow-lg:10px 10px 0 #111;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Helvetica Neue",Helvetica,Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--yellow);color:var(--ink)}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+  @media(max-width:640px){.wrap{padding:0 20px}}
+  .mono{font-family:"Courier New",monospace}
+
+  /* ============ 导航（悬浮贴纸条） ============ */
+  header{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;width:min(94%,1240px)}
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--bg);border:2px solid var(--ink);
+    box-shadow:var(--shadow);padding:10px 20px;border-radius:999px;
+  }
+  .nav .logo{
+    font-weight:900;font-size:16px;letter-spacing:.05em;text-decoration:none;color:var(--ink);
+    display:flex;align-items:center;gap:8px;
+  }
+  .nav .logo .sq{width:14px;height:14px;background:var(--red);border:2px solid var(--ink);display:inline-block}
+  .nav ul{display:flex;gap:6px;list-style:none}
+  .nav ul a{
+    font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+    text-decoration:none;color:var(--ink);padding:8px 14px;border-radius:999px;
+    border:2px solid transparent;transition:.15s;
+  }
+  .nav ul a:hover{border-color:var(--ink);background:var(--yellow)}
+  @media(max-width:640px){.nav ul a{padding:8px 8px}.nav ul a span{display:none}}
+
+  /* ============ HERO ============ */
+  .hero{padding:180px 0 100px;position:relative}
+  .hero .top-tag{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:"Courier New",monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    border:2px solid var(--ink);padding:8px 16px;background:var(--yellow);box-shadow:var(--shadow);
+    margin-bottom:36px;font-weight:700;
+  }
+  .hero .top-tag .blink{
+    width:9px;height:9px;border-radius:50%;background:var(--red);animation:blink 1.2s steps(2) infinite;
+  }
+  @keyframes blink{50%{opacity:.2}}
+  h1{
+    font-weight:900;font-size:clamp(56px,10vw,124px);
+    line-height:.98;letter-spacing:-.02em;text-transform:uppercase;
+  }
+  h1 .hl{
+    background:var(--yellow);padding:0 12px;display:inline-block;
+    border:2px solid var(--ink);box-shadow:var(--shadow);transform:rotate(-1deg);
+  }
+  h1 .outline{
+    color:transparent;-webkit-text-stroke:2.5px var(--ink);
+  }
+  .hero .desc{
+    margin-top:36px;max-width:560px;font-size:18px;line-height:1.9;color:#3c3c3c;
+  }
+  .hero .desc b{background:linear-gradient(transparent 62%,var(--yellow) 62%)}
+  .hero .cta{margin-top:40px;display:flex;gap:16px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.08em;
+    text-decoration:none;color:var(--ink);
+    padding:15px 28px;border:2px solid var(--ink);background:var(--bg);
+    box-shadow:var(--shadow);transition:.15s;border-radius:10px;
+  }
+  .btn:hover{transform:translate(3px,3px);box-shadow:3px 3px 0 var(--ink)}
+  .btn.primary{background:var(--ink);color:var(--bg)}
+  .btn.primary:hover{background:var(--red);color:var(--bg)}
+  .btn .arr{transition:.15s}
+  .btn:hover .arr{transform:translateX(4px)}
+
+  /* hero 角落贴纸块 */
+  .hero .deco{
+    position:absolute;top:170px;right:60px;width:170px;height:170px;
+    border:2px solid var(--ink);background:var(--blue);
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+    box-shadow:var(--shadow-lg);transform:rotate(3deg);
+  }
+  .hero .deco img{width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;opacity:.9}
+  .hero .deco .txt{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-weight:900;color:var(--bg);font-size:15px;text-transform:uppercase;letter-spacing:.1em;
+    text-align:center;line-height:1.5;
+  }
+  .hero .deco::after{
+    content:"";position:absolute;inset:8px;border:2px dashed rgba(250,248,245,.6);
+  }
+  @media(max-width:960px){.hero .deco{display:none}}
+
+  /* ============ 跑马灯 ============ */
+  .marquee{
+    border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+    background:var(--yellow);overflow:hidden;white-space:nowrap;padding:14px 0;
+  }
+  .marquee .t{
+    display:inline-block;animation:sl 22s linear infinite;
+    font-weight:900;font-size:15px;text-transform:uppercase;letter-spacing:.14em;
+  }
+  .marquee .t span{margin:0 22px}
+  .marquee .t i{font-style:normal;color:var(--red)}
+  @keyframes sl{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ============ 区块标题 ============ */
+  section{padding:110px 0}
+  .sec-tag{
+    display:inline-block;font-family:"Courier New",monospace;font-weight:700;
+    font-size:12px;letter-spacing:.25em;text-transform:uppercase;
+    background:var(--ink);color:var(--bg);padding:8px 16px;margin-bottom:22px;
+  }
+  .sec-title{
+    font-weight:900;font-size:clamp(38px,6vw,72px);text-transform:uppercase;
+    letter-spacing:-.01em;line-height:1;margin-bottom:56px;
+  }
+  .sec-title .lite{color:transparent;-webkit-text-stroke:2px var(--ink)}
+
+  /* ============ 作品（Brutalist 卡片墙） ============ */
+  .works{display:grid;grid-template-columns:repeat(2,1fr);gap:36px}
+  @media(max-width:820px){.works{grid-template-columns:1fr}}
+  .work{
+    display:block;text-decoration:none;color:var(--ink);
+    border:2px solid var(--ink);background:var(--bg);
+    box-shadow:var(--shadow);transition:.18s;border-radius:14px;overflow:hidden;
+  }
+  .work:hover{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--ink)}
+  .work .thumb{
+    height:230px;border-bottom:2px solid var(--ink);position:relative;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+  }
+  .work:nth-child(1) .thumb{background:var(--yellow)}
+  .work:nth-child(2) .thumb{background:var(--blue)}
+  .work:nth-child(3) .thumb{background:var(--red)}
+  .work:nth-child(4) .thumb{background:var(--green)}
+  .work .thumb .big{
+    font-weight:900;font-size:clamp(34px,4vw,54px);text-transform:uppercase;color:var(--bg);
+    text-shadow:3px 3px 0 rgba(17,17,17,.9);transition:.25s;
+  }
+  .work .thumb .bg-word{
+    position:absolute;font-weight:900;font-size:120px;color:rgba(17,17,17,.08);
+    top:-20px;left:-10px;letter-spacing:-.03em;user-select:none;
+  }
+  .work .thumb img,
+  .work .thumb video{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;transition:.25s;
+  }
+  .work .thumb .live{
+    position:absolute;top:14px;right:14px;z-index:2;
+    font-family:"Courier New",monospace;font-size:10px;font-weight:700;
+    letter-spacing:.16em;background:var(--bg);border:2px solid var(--ink);
+    padding:5px 10px;border-radius:999px;
+  }
+
+  /* ---------- 弹窗：展板 / 视频选择 ---------- */
+  .lb{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(17,17,17,.78);
+    display:none;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .lb.open{display:flex}
+  .lb-box{
+    background:var(--bg);border:2px solid var(--ink);
+    box-shadow:var(--shadow-lg);border-radius:14px;
+    max-width:920px;width:100%;max-height:88vh;overflow:auto;
+    padding:26px;position:relative;
+  }
+  .lb-close{
+    position:absolute;top:14px;right:14px;width:40px;height:40px;
+    border:2px solid var(--ink);background:var(--yellow);border-radius:10px;
+    font-size:18px;font-weight:900;cursor:pointer;box-shadow:var(--shadow);
+    font-family:inherit;
+  }
+  .lb-close:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink)}
+  .lb-title{font-weight:900;font-size:26px;text-transform:uppercase;margin-bottom:18px;padding-right:52px}
+  .lb-choice{display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+  .lb-btn{
+    font-family:inherit;font-weight:800;font-size:13px;text-transform:uppercase;
+    letter-spacing:.08em;cursor:pointer;color:var(--ink);
+    padding:12px 22px;border:2px solid var(--ink);background:var(--bg);
+    box-shadow:var(--shadow);transition:.15s;border-radius:10px;
+  }
+  .lb-btn:hover{transform:translate(3px,3px);box-shadow:3px 3px 0 var(--ink)}
+  .lb-btn.active{background:var(--ink);color:var(--bg)}
+  .lb-view img,.lb-view video{
+    width:100%;display:block;border:2px solid var(--ink);border-radius:10px;background:#000;
+  }
+  .work:hover .thumb .big{transform:scale(1.06) rotate(-2deg)}
+  .work .body{padding:22px 24px 26px}
+  .work .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .work .cat{
+    font-family:"Courier New",monospace;font-size:11px;font-weight:700;
+    letter-spacing:.18em;text-transform:uppercase;
+    background:var(--ink);color:var(--bg);padding:5px 10px;
+  }
+  .work .yr{font-family:"Courier New",monospace;font-size:12px;color:#666;font-weight:700}
+  .work h3{font-weight:900;font-size:23px;text-transform:uppercase;margin-bottom:8px}
+  .work p{font-size:15px;line-height:1.75;color:#4a4a4a}
+
+  /* ============ 关于 ============ */
+  .about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:start}
+  @media(max-width:860px){.about-grid{grid-template-columns:1fr}}
+  .about-txt p{font-size:17px;line-height:2;color:#333;margin-bottom:20px}
+  .about-txt p .hl2{background:linear-gradient(transparent 62%,var(--yellow) 62%);font-weight:700}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+  .stat{
+    border:2px solid var(--ink);background:var(--bg);box-shadow:var(--shadow);
+    padding:20px;border-radius:12px;text-align:center;transition:.15s;
+  }
+  .stat:hover{transform:translate(2px,2px);box-shadow:4px 4px 0 var(--ink)}
+  .stat b{display:block;font-weight:900;font-size:30px;margin-bottom:6px}
+  .stat span{font-family:"Courier New",monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#555;font-weight:700}
+  .about-card{
+    border:2px solid var(--ink);background:var(--yellow);
+    box-shadow:var(--shadow-lg);border-radius:16px;padding:30px;
+    transform:rotate(1.4deg);transition:.2s;
+  }
+  .about-card:hover{transform:rotate(0)}
+  .about-card .head{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+  .about-card .ava{
+    width:64px;height:64px;border-radius:50%;border:2px solid var(--ink);
+    background:var(--blue);display:flex;align-items:center;justify-content:center;
+    font-weight:900;color:var(--bg);font-size:20px;
+  }
+  .about-card .head .nm{font-weight:900;font-size:19px}
+  .about-card .head .rl{font-family:"Courier New",monospace;font-size:12px;color:#444;margin-top:3px;letter-spacing:.06em}
+  .about-card ul{list-style:none}
+  .about-card li{
+    display:flex;gap:12px;align-items:flex-start;padding:12px 0;
+    border-top:2px solid rgba(17,17,17,.2);font-size:14.5px;line-height:1.65;
+  }
+  .about-card li .mk{
+    font-weight:900;color:var(--red);flex-shrink:0;
+  }
+
+  /* ============ 洞察 / 文字（Writings & Talks） ============ */
+  .list{border-top:2px solid var(--ink)}
+  .item{
+    display:grid;grid-template-columns:80px 1fr auto;gap:26px;align-items:center;
+    padding:30px 10px;border-bottom:2px solid var(--ink);text-decoration:none;color:var(--ink);
+    transition:.18s;position:relative;
+  }
+  .item:hover{background:var(--bg);padding-left:26px;box-shadow:inset 6px 0 0 var(--red)}
+  .item .no{font-family:"Courier New",monospace;font-weight:700;font-size:14px;color:#777}
+  .item h4{font-weight:900;font-size:clamp(20px,2.6vw,28px);text-transform:uppercase;margin-bottom:6px}
+  .item p{font-size:14.5px;color:#555;line-height:1.6}
+  .item .tag{font-family:"Courier New",monospace;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;border:2px solid var(--ink);padding:6px 12px;border-radius:999px;white-space:nowrap}
+  @media(max-width:640px){.item{grid-template-columns:1fr}.item .no{display:none}.item .tag{display:none}}
+
+  /* ============ 页脚 ============ */
+  footer{border-top:2px solid var(--ink);background:var(--ink);color:var(--bg);padding:100px 0 50px;position:relative;overflow:hidden}
+  footer .big{
+    font-weight:900;font-size:clamp(46px,8.5vw,110px);line-height:1;text-transform:uppercase;
+    margin-bottom:44px;
+  }
+  footer .big .hl{background:var(--yellow);color:var(--ink);padding:0 14px;display:inline-block;border:2px solid var(--bg);transform:rotate(-1deg)}
+  footer .big a{color:var(--bg);text-decoration:none;border-bottom:5px solid var(--red);transition:.15s}
+  footer .big a:hover{color:var(--yellow)}
+  footer .mail{
+    display:inline-block;font-size:18px;color:var(--bg);text-decoration:none;
+    font-weight:700;margin-bottom:52px;border-bottom:2px solid rgba(250,248,245,.4);padding-bottom:4px;transition:.15s;
+  }
+  footer .mail:hover{border-color:var(--yellow);color:var(--yellow)}
+  .frow{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;padding-top:28px;border-top:2px solid rgba(250,248,245,.2)}
+  .fl a{
+    font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;
+    color:rgba(250,248,245,.6);text-decoration:none;margin-right:24px;transition:.15s;
+  }
+  .fl a:hover{color:var(--yellow)}
+  .cp{font-family:"Courier New",monospace;font-size:11px;letter-spacing:.1em;color:rgba(250,248,245,.4)}
+
+  /* ============ 入场动画 ============ */
+  .rv{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+  .rv.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="#top"><span class="sq"></span>CHENG KE</a>
+    <ul>
+      <li><a href="#work">Work<span> / 作品</span></a></li>
+      <li><a href="#about">About<span> / 关于</span></a></li>
+      <li><a href="#more">More<span> / 碎碎念</span></a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <div class="wrap">
+    <div class="top-tag rv"><span class="blink"></span>AVAILABLE FOR WORK — 2026</div>
+    <h1 class="rv">Design.<br>Code.<br><span class="hl">Ship it.</span></h1>
+    <p class="desc rv">
+      我是<b>程珂</b>，<b>艺术与科技专业</b>。探索 AI、交互与创意表达的交叉点。
+      这个站由我设计和手写 —— 好东西不必等太久，<b>30 分钟也能做出态度</b>。
+    </p>
+    <div class="cta rv">
+      <a class="btn primary" href="#work">View Work <span class="arr">→</span></a>
+      <a class="btn" href="#contact">Say Hello</a>
+    </div>
+  </div>
+  <div class="deco rv">
+    <div class="txt">Design<br>Doodles<br>&amp; Camera<br>★</div>
+  </div>
+</div>
+
+<!-- 跑马灯 -->
+<div class="marquee">
+  <div class="t">
+    <span>Product Design</span><i>✦</i><span>AI × Interaction</span><i>✦</i><span>Doodles</span><i>✦</i><span>Photography</span><i>✦</i><span>Vibe Coding</span><i>✦</i>
+    <span>Product Design</span><i>✦</i><span>AI × Interaction</span><i>✦</i><span>Doodles</span><i>✦</i><span>Photography</span><i>✦</i><span>Vibe Coding</span><i>✦</i>
+  </div>
+</div>
+
+<!-- WORK -->
+<section id="work">
+  <div class="wrap">
+    <div class="rv"><span class="sec-tag">01 / Selected Work</span></div>
+    <h2 class="sec-title rv">Real projects,<br><span class="lite">no filler.</span></h2>
+    <div class="works">
+      <a class="work rv" href="#"
+         data-title="VR" data-img="vr/展板.png" data-video="vr/1.mp4">
+        <div class="thumb"><span class="bg-word">01</span><span class="big">VR</span><span class="live">展板 / 视频</span></div>
+        <div class="body">
+          <div class="row"><span class="cat">Interactive</span><span class="yr">01</span></div>
+          <h3>VR</h3>
+          <p>使用虚幻引擎（UE）与 PICO 头显，搭建了一座可漫游的蘑菇森林虚拟场景 —— 希望借助虚拟自然空间，给人安静治愈的感受。</p>
+        </div>
+      </a>
+      <a class="work rv" href="#"
+         data-title="地图导览"
+         data-img="地图导览.png|乌镇导览/1.png|乌镇导览/2.png|展厅设计/程珂叶荟茹.png">
+        <div class="thumb"><span class="bg-word">02</span><span class="big">Map</span><span class="live">展板 ×4</span></div>
+        <div class="body">
+          <div class="row"><span class="cat">Interactive</span><span class="yr">02</span></div>
+          <h3>地图导览</h3>
+          <p>寺庙主题的展厅策展与导览设计，使用 Processing 与 CAD 完成。包含乌镇导览与展厅设计方案展板。</p>
+        </div>
+      </a>
+      <a class="work rv" href="#"
+         data-title="TD" data-img="TD/展板.png" data-video="TD/主题视频.mp4" data-poster="TD/动态海报.mp4">
+        <div class="thumb"><span class="bg-word">03</span><span class="big">TD</span><span class="live">展板 / 海报 / 视频</span></div>
+        <div class="body">
+          <div class="row"><span class="cat">Visual</span><span class="yr">03</span></div>
+          <h3>TD</h3>
+          <p>以保护海洋生物为主题的动态影像作品，使用 TouchDesigner 与剪映创作。</p>
+        </div>
+      </a>
+      <a class="work rv" href="#"
+         data-title="建造"
+         data-img="建筑/建筑.png|建筑/无标题.jpg|建筑/无标题8.jpg|建筑/无标题10.jpg|建筑/无标题18.jpg|建筑/每次.jpg"
+         data-pdf="建造.pdf">
+        <div class="thumb"><span class="bg-word">04</span><span class="big">Build</span><span class="live">展板 ×6 / PDF</span></div>
+        <div class="body">
+          <div class="row"><span class="cat">Spatial</span><span class="yr">04</span></div>
+          <h3>建造</h3>
+          <p>观景亭设计，使用 CAD 与 SketchUp（SU）完成方案与建模。点击卡片查看设计方案展板与 PDF 文档。</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- OTHER DESIGN PROPOSALS -->
+<section id="other">
+  <div class="wrap">
+    <div class="rv"><span class="sec-tag">02 / 其他设计方案</span></div>
+    <h2 class="sec-title rv">More <span class="lite">proposals.</span></h2>
+    <div class="works">
+      <a class="work rv" href="#"
+         data-title="未来餐车设计"
+         data-img="未来餐车设计/2024001126-程珂-调研版.jpg"
+         data-video="未来餐车设计/2024001126-程珂-展示视频.mp4">
+        <div class="thumb"><span class="bg-word">05</span><span class="big">Food</span><span class="live">展板 / 视频</span></div>
+        <div class="body">
+          <div class="row"><span class="cat">Product</span><span class="yr">05</span></div>
+          <h3>未来餐车设计</h3>
+          <p>未来餐车设计调研与方案展示，从用户调研到概念呈现的完整流程。</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 艺术设计 -->
+<section id="art">
+  <div class="wrap">
+    <div class="rv"><span class="sec-tag">03 / 艺术设计</span></div>
+    <h2 class="sec-title rv">Art <span class="lite">works.</span></h2>
+    <div class="works">
+      <a class="work rv" href="#"
+         data-title="图形" data-pdf="图形.pdf">
+        <div class="thumb"><span class="bg-word">07</span><span class="big">Art</span><span class="live">PDF ↗</span></div>
+        <div class="body">
+          <div class="row"><span class="cat">Graphic</span><span class="yr">07</span></div>
+          <h3>图形</h3>
+          <p>平面图形创作，探索视觉语言与构成的可能性。点击卡片查看 PDF。</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="background:var(--yellow);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)">
+  <div class="wrap">
+    <div class="rv"><span class="sec-tag" style="background:var(--bg);color:var(--ink)">04 / About</span></div>
+    <h2 class="sec-title rv">Hello, I'm<br><span class="hl" style="background:var(--bg)">程珂.</span></h2>
+    <div class="about-grid">
+      <div class="about-txt rv">
+        <p><span class="hl2">艺术与科技专业</span>，在设计与技术的边界处工作。相信最好的作品诞生于两者互相提问的地方：技术给创意落地的方式，创意给技术一个值得落地的理由。</p>
+        <p>目前专注探索 <span class="hl2">AI、交互与创意表达的交叉点</span>：白天做设计、写代码，晚上画涂鸦、拍照、记灵感。这个站本身就是一次实验 —— 由我设计和手写，从想法到上线只用了一个下午。</p>
+        <p>现在，我正在寻找下一个值得认真做的项目。</p>
+        <div class="stats">
+          <div class="stat"><b>Art</b><span>× Tech</span></div>
+          <div class="stat"><b>AI</b><span>Explorer</span></div>
+          <div class="stat"><b>∞</b><span>Curiosity</span></div>
+        </div>
+      </div>
+      <div class="about-card rv">
+        <div class="head">
+          <div class="ava">AC</div>
+          <div>
+            <div class="nm">CHENG KE · 程珂</div>
+            <div class="rl">Art &amp; Technology<br>AI × Interaction × Creative Coding</div>
+          </div>
+        </div>
+        <ul>
+          <li><span class="mk">✦</span><span>近期在做：AI 辅助的设计工具与实验性网页</span></li>
+          <li><span class="mk">✦</span><span>相信的话：快速做出 > 完美规划，先上线再迭代</span></li>
+          <li><span class="mk">✦</span><span>工作之外：涂鸦、胶片摄影、逛旧货市场</span></li>
+          <li><span class="mk">✦</span><span>开放合作：独立项目 / 远程全职 / 闲聊都行</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MORE -->
+<section id="more">
+  <div class="wrap">
+    <div class="rv"><span class="sec-tag">05 / Side Projects, Writings &amp; Talks</span></div>
+    <h2 class="sec-title rv">Beyond<br><span class="lite">the 9-to-5.</span></h2>
+    <div class="list">
+      <a class="item rv" href="#">
+        <span class="no">/ 01</span>
+        <div><h4>Design Encyclopedia</h4><p>70+ 设计风格百科与"品味引擎"，帮 vibe coder 找到对的视觉方向。</p></div>
+        <span class="tag">Side Project</span>
+      </a>
+      <a class="item rv" href="#">
+        <span class="no">/ 02</span>
+        <div><h4>Vibe Coding in 30 Minutes</h4><p>用 AI 在 30 分钟内做出完整作品集的完整复盘与方法论。</p></div>
+        <span class="tag">Talk</span>
+      </a>
+      <a class="item rv" href="#">
+        <span class="no">/ 03</span>
+        <div><h4>Doodle a Day</h4><p>坚持 200 天的每日涂鸦计划，全部用单色墨水完成。</p></div>
+        <span class="tag">Doodles</span>
+      </a>
+      <a class="item rv" href="#">
+        <span class="no">/ 04</span>
+        <div><h4>Street Type Archive</h4><p>三年拍下 1200+ 张街头招牌，整理成可检索的字体灵感库。</p></div>
+        <span class="tag">Photography</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<footer id="contact">
+  <div class="wrap">
+    <div class="big rv">Got an idea?<br><span class="hl">Let's talk.</span></div>
+    <a class="mail" href="mailto:hello@chengke.design">hello@chengke.design ↗</a>
+    <div class="frow">
+      <div class="fl">
+        <a href="#">GitHub</a>
+        <a href="#">Dribbble</a>
+        <a href="#">小红书</a>
+        <a href="#">Medium</a>
+      </div>
+      <div class="cp">© 2026 CHENG KE — DESIGNED &amp; CODED BY HAND</div>
+    </div>
+  </div>
+</footer>
+
+<!-- 作品查看弹窗 -->
+<div class="lb" id="lb">
+  <div class="lb-box">
+    <button class="lb-close" aria-label="关闭">✕</button>
+    <div class="lb-title"></div>
+    <div class="lb-choice">
+      <button class="lb-btn" data-type="img">展板</button>
+      <button class="lb-btn" data-type="video">视频</button>
+      <button class="lb-btn" data-type="poster">动态海报</button>
+      <button class="lb-btn" data-type="pdf">PDF ↗</button>
+    </div>
+    <div class="lb-view"></div>
+  </div>
+</div>
+
+<script>
+  // 滚动入场
+  const io = new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.1});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+  // 作品弹窗
+  const lb = document.getElementById('lb');
+  const lbTitle = lb.querySelector('.lb-title');
+  const lbView  = lb.querySelector('.lb-view');
+  const btns = {
+    img:    lb.querySelector('[data-type="img"]'),
+    video:  lb.querySelector('[data-type="video"]'),
+    poster: lb.querySelector('[data-type="poster"]'),
+    pdf:    lb.querySelector('[data-type="pdf"]')
+  };
+  let cur = {};
+
+  function openLb(d){
+    cur = d;
+    lbTitle.textContent = d.title;
+    btns.img.style.display    = d.img    ? '' : 'none';
+    btns.video.style.display  = d.video  ? '' : 'none';
+    btns.poster.style.display = d.poster ? '' : 'none';
+    btns.pdf.style.display    = d.pdf    ? '' : 'none';
+    lbView.innerHTML = '';
+    Object.values(btns).forEach(b=>b.classList.remove('active'));
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb(){
+    lb.classList.remove('open');
+    lbView.innerHTML = '';   // 停止视频播放
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.work').forEach(a=>{
+    a.addEventListener('click', e=>{ e.preventDefault(); openLb(a.dataset); });
+  });
+  lb.querySelector('.lb-close').addEventListener('click', closeLb);
+  lb.addEventListener('click', e=>{ if(e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeLb(); });
+
+  btns.img.addEventListener('click', ()=>{
+    const imgs = (cur.img || '').split('|').filter(Boolean);
+    lbView.innerHTML = imgs
+      .map(s=>'<img src="' + s + '" alt="' + cur.title + '">')
+      .join('<div style="height:16px"></div>');
+    [btns.img, btns.video, btns.poster].forEach(b=>b.classList.remove('active'));
+    btns.img.classList.add('active');
+  });
+  btns.video.addEventListener('click', ()=>{
+    lbView.innerHTML = '<video src="' + cur.video + '" controls autoplay loop playsinline></video>';
+    [btns.img, btns.video, btns.poster].forEach(b=>b.classList.remove('active'));
+    btns.video.classList.add('active');
+  });
+  btns.poster.addEventListener('click', ()=>{
+    lbView.innerHTML = '<video src="' + cur.poster + '" controls autoplay loop playsinline></video>';
+    [btns.img, btns.video, btns.poster].forEach(b=>b.classList.remove('active'));
+    btns.poster.classList.add('active');
+  });
+  btns.pdf.addEventListener('click', ()=>{ window.open(cur.pdf, '_blank'); });
+</script>
+
+</body>
+</html>
